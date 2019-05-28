@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Container from "./containers/Container";
+// import containers
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    getData();
+    //anything you want to run straight away
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Container />
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  getData() {
+    dispatch(() => {
+      fetch(`API URL`)
+        .then(res => res.json())
+        .then(items => {
+          dispatch({
+            type: "ADD_ITEMS",
+            items
+          });
+        });
+    });
+  }
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
